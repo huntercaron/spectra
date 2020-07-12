@@ -1,15 +1,61 @@
 import * as React from "react"
 import { useRef } from "react"
 import * as Meyda from "meyda"
-import { motion, useMotionValue, useAnimation } from "framer-motion"
-import { Canvas } from "react-three-fiber"
+import { motion, useMotionValue, useAnimation, useSpring } from "framer-motion"
+import { Canvas, useFrame } from "react-three-fiber"
+import { Mesh } from "three"
+
+const features = [
+    "amplitudeSpectrum",
+    "chroma",
+    "complexSpectrum",
+    "energy",
+    "loudness",
+    "mfcc",
+    "perceptualSharpness",
+    "perceptualSpread",
+    "powerSpectrum",
+    "rms",
+    "spectralCentroid",
+    "spectralFlatness",
+    "spectralFlux",
+    "spectralKurtosis",
+    "spectralRolloff",
+    "spectralSkewness",
+    "spectralSlope",
+    "spectralSpread",
+    "zcr",
+    "buffer",
+]
+
+function InnerCanvas(props) {
+    const { value } = props
+    const mesh = useRef<Mesh>()
+    const springVal = useSpring(value, {
+        stiffness: 100,
+        damping: 60,
+        mass: 0.05,
+    })
+
+    useFrame(() => {
+        const size = Math.max(1 + springVal.get() * 0.1, 1)
+        mesh.current.scale.set(size, size, size)
+        mesh.current.rotation.x = mesh.current.rotation.y += 0.01
+    })
+
+    return (
+        <mesh {...props} ref={mesh}>
+            <meshBasicMaterial attach="material" color="pink" />
+            <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+        </mesh>
+    )
+}
 
 export default function Vis() {
+    const spectralCentroid = useMotionValue<number>(0)
     const rms = useMotionValue<number>(0)
-    const mounted = useRef(false)
-    const analyzer = useRef<any>()
-
-    const controls = useAnimation()
+    const zcr = useMotionValue<number>(0)
+    const analyzer = useRef<Meyda.MeydaAnalyzer>()
 
     // rms.onChange((latest) => console.log(typeof latest))
 
@@ -28,40 +74,25 @@ export default function Vis() {
 
                 // jesus how do i mute this
 
-                if (analyzer.current) analyzer.stop()
+                if (analyzer.current) analyzer.current.stop()
 
                 analyzer.current = Meyda.createMeydaAnalyzer({
                     audioContext: audioContext,
                     source: source,
                     bufferSize: 512,
-                    featureExtractors: ["rms"],
+                    featureExtractors: ["rms", "spectralCentroid", "zcr"],
                     callback: (features: any) => {
-                        const num: number = parseFloat(features.rms) * 100
-                        const number = +num.toFixed(2)
-                        if (typeof number !== "number") return
-                        // console.log(features.rms)
-                        controls.start({ scale: number })
+                        rms.set(features.rms * 10)
+                        zcr.set(features.zcr * 0.03921568627)
+                        spectralCentroid.set(features.spectralCentroid * 0.1)
                     },
                 })
                 analyzer.current.start()
             })
     }, [rms])
+
     return (
         <div className="App">
-            <h1>Hello CodeSandbox</h1>
-            <h2>Start editing to see some magic happen!</h2>
-            <motion.div
-                onTap={() => console.log(rms.get())}
-                style={{
-                    backgroundColor: "blue",
-                    width: 50,
-                    height: 50,
-                    margin: "auto",
-                    scale: 1,
-                }}
-                animate={controls}
-            />
-
             <Canvas
                 style={{
                     position: "fixed",
@@ -70,10 +101,9 @@ export default function Vis() {
                     zIndex: -1,
                 }}
             >
-                <mesh position={[0, 0, 0]}>
-                    <meshBasicMaterial attach="material" color="pink" />
-                    <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-                </mesh>
+                <InnerCanvas value={spectralCentroid} position={[0, 2, 0]} />
+                <InnerCanvas value={rms} />
+                <InnerCanvas value={zcr} position={[0, -2, 0]} />
             </Canvas>
         </div>
     )
