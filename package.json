@@ -1,36 +1,41 @@
 {
-  "name": "gatsby-starter-hello-world",
-  "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
-  "version": "0.1.0",
-  "license": "0BSD",
-  "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
-  },
-  "dependencies": {
-    "canvas-sketch-util": "^1.10.0",
-    "gatsby": "^2.23.12",
-    "meyda": "^5.0.3",
-    "postprocessing": "^6.16.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-three-fiber": "^4.2.13",
-    "three": "^0.118.3"
-  },
-  "devDependencies": {
-    "prettier": "2.0.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
-  },
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
-  }
+    "name": "gatsby-starter-hello-world",
+    "private": true,
+    "description": "A simplified bare-bones starter for Gatsby",
+    "version": "0.1.0",
+    "license": "0BSD",
+    "scripts": {
+        "build": "gatsby build",
+        "develop": "GATSBY_HOT_LOADER=fast-refresh gatsby develop",
+        "develop-hosted": "GATSBY_HOT_LOADER=fast-refresh gatsby develop -p 8080 -H 0.0.0.0",
+        "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+        "start": "npm run develop",
+        "serve": "gatsby serve",
+        "clean": "gatsby clean",
+        "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    },
+    "dependencies": {
+        "@types/meyda": "^4.3.1",
+        "canvas-sketch-util": "^1.10.0",
+        "framer-motion": "^1.11.1",
+        "gatsby": "^2.23.12",
+        "lerp": "^1.0.3",
+        "meyda": "^5.0.3",
+        "postprocessing": "^6.16.0",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "react-three-fiber": "^4.2.13",
+        "ress": "^2.0.4",
+        "three": "^0.118.3"
+    },
+    "devDependencies": {
+        "prettier": "2.0.5"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+    },
+    "bugs": {
+        "url": "https://github.com/gatsbyjs/gatsby/issues"
+    }
 }
