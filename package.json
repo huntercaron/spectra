@@ -17,15 +17,15 @@
     "dependencies": {
         "@types/meyda": "^4.3.1",
         "canvas-sketch-util": "^1.10.0",
-        "framer-motion": "^1.11.1",
-        "gatsby": "^2.23.12",
+        "framer-motion": "^2.1.4",
+        "gatsby": "^2.24.11",
         "lerp": "^1.0.3",
         "meyda": "^5.0.3",
         "postprocessing": "^6.16.0",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
-        "react-three-fiber": "^4.2.13",
-        "ress": "^2.0.4",
+        "react-three-fiber": "^4.2.17",
+        "ress": "^3.0.0",
         "three": "^0.118.3"
     },
     "devDependencies": {
