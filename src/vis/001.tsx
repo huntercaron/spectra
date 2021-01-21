@@ -3,7 +3,7 @@ import { useRef } from "react"
 import * as Meyda from "meyda"
 import { motion, useMotionValue, useAnimation, useSpring } from "framer-motion"
 import { Canvas, useFrame } from "react-three-fiber"
-import { Mesh } from "three"
+import type * as THREE from "three"
 
 const features = [
     "amplitudeSpectrum",
@@ -30,7 +30,7 @@ const features = [
 
 function InnerCanvas(props) {
     const { value } = props
-    const mesh = useRef<Mesh>()
+    const mesh = useRef<THREE.Mesh>()
     const springVal = useSpring(value, {
         stiffness: 100,
         damping: 60,

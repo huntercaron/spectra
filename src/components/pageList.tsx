@@ -1,31 +1,17 @@
-import React from "react"
-import { useStaticQuery, graphql, Link } from "gatsby"
+import * as React from "react"
 import { motion, AnimateSharedLayout } from "framer-motion"
 
 // Navigation element to navigate between pages
 export const PageList = (props) => {
     // cheeky query to get all non-404 pages
-    const data = useStaticQuery(graphql`
-        query PageLinksQuery {
-            allSitePage(filter: { path: { regex: "/^((?!404).)*$/s" } }) {
-                edges {
-                    node {
-                        path
-                    }
-                }
-            }
-        }
-    `)
-
-    const pageCount = data.allSitePage.edges.length
-
+    const pageCount = 4;
     return (
         <ul>
             <AnimateSharedLayout>
-                {data.allSitePage.edges.map(({ node: page }, i) => {
+                {[].map(({ node: page }, i) => {
                     const isCurrentPage = props.path === page.path
                     return (
-                        <Link to={page.path} key={page.path} className="link">
+
                             <motion.li whileTap={{ scale: 0.95 }}>
                                 {/* Page number */}
                                 <h5>Page {i + 1}</h5>
@@ -44,7 +30,7 @@ export const PageList = (props) => {
                                     />
                                 )}
                             </motion.li>
-                        </Link>
+                  
                     )
                 })}
             </AnimateSharedLayout>

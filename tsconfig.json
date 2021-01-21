@@ -1,0 +1,20 @@
+{
+    "include": ["src", "types", "https/**/*"],
+    "compilerOptions": {
+      "module": "esnext",
+      "target": "esnext",
+      "moduleResolution": "node",
+      "jsx": "preserve",
+      "baseUrl": "./",
+      "paths": {"*": [".snowpack/.types/*"]},
+      "noEmit": true,
+      "allowJs": true,
+      "strict": false,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "resolveJsonModule": true,
+      "allowSyntheticDefaultImports": true,
+      "importsNotUsedAsValues": "preserve"
+    }
+  }
