@@ -1,11 +1,11 @@
 import * as React from "react"
-import { PageList } from "./components/pageList"
+import Vis from "./001"
 
 export default function Main(props) {
     return (
         <div>
             Hello world!
-            <PageList {...props} />
+            <Vis />
         </div>
     )
 }

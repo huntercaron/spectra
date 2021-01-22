@@ -1,34 +1,131 @@
 import * as React from "react"
-import { useRef } from "react"
-import * as Meyda from "meyda"
-import { motion, useMotionValue, useAnimation, useSpring } from "framer-motion"
+import { useRef, useEffect, useState } from "react"
+// @ts-ignore
+import Meyda from "https://jspm.dev/meyda"
+import {
+    motion,
+    useMotionValue,
+    motionValue,
+    useSpring,
+    MotionValue,
+} from "framer-motion"
+import { Html } from "@react-three/drei"
 import { Canvas, useFrame } from "react-three-fiber"
 import type * as THREE from "three"
+import type { MeydaAudioFeature } from "meyda"
 
-const features = [
-    "amplitudeSpectrum",
-    "chroma",
-    "complexSpectrum",
+const audioFeatures: MeydaAudioFeature[] = [
+    // "amplitudeSpectrum",
+    // "chroma",
+    // "complexSpectrum",
     "energy",
     "loudness",
-    "mfcc",
+    // "mfcc",
     "perceptualSharpness",
     "perceptualSpread",
-    "powerSpectrum",
+    // "powerSpectrum",
     "rms",
     "spectralCentroid",
     "spectralFlatness",
-    "spectralFlux",
+    // "spectralFlux",
     "spectralKurtosis",
     "spectralRolloff",
     "spectralSkewness",
     "spectralSlope",
     "spectralSpread",
     "zcr",
-    "buffer",
+    // "buffer",
 ]
 
-function InnerCanvas(props) {
+// | 'spectralFlux'
+// | 'spectralKurtosis'
+// | 'spectralRolloff'
+// | 'spectralSkewness'
+// | 'spectralSlope'
+// | 'spectralSpread'
+
+type Init<T> = () => T
+
+/**
+ * Creates a constant value over the lifecycle of a component.
+ *
+ * Even if `useMemo` is provided an empty array as its final argument, it doesn't offer
+ * a guarantee that it won't re-run for performance reasons later on. By using `useConstant`
+ * you can ensure that initialisers don't execute twice or more.
+ */
+export function useConstant<T>(init: Init<T>) {
+    const ref = useRef<T | null>(null)
+
+    if (ref.current === null) {
+        ref.current = init()
+    }
+
+    return ref.current
+}
+
+interface AudioFeatureMotionValues {
+    [key: string]: MotionValue<number>
+}
+
+function useMeydaAudioFeatures(
+    features: MeydaAudioFeature[]
+): Meyda.MeydaAnalyzer {
+    const analyzer = useRef<Meyda.MeydaAnalyzer>()
+    const featureMotionValues = useRef<AudioFeatureMotionValues>({})
+
+    if (Object.keys(featureMotionValues.current).length === 0) {
+        features.map(
+            (feature) => (featureMotionValues.current[feature] = motionValue(0))
+        )
+    }
+
+    useEffect(() => {
+        navigator.mediaDevices
+            .getUserMedia({ audio: true, video: false })
+            .then(function (stream) {
+                const audioContext = new AudioContext()
+                // Now we need to have the audio context take control of your HTML Audio Element.
+                // Create an "Audio Node" from the Audio Element
+                const source = audioContext.createMediaStreamSource(stream)
+                if (analyzer.current) analyzer.current.stop()
+
+                analyzer.current = Meyda.createMeydaAnalyzer({
+                    audioContext: audioContext,
+                    source: source,
+                    bufferSize: 512,
+                    featureExtractors: features,
+                    callback: (featureValues: any) => {
+                        features.map((feature) => {
+                            // console.log(feature, featureValues[feature])
+                            switch (feature) {
+                                case "loudness":
+                                    featureMotionValues.current[feature].set(
+                                        featureValues[feature]
+                                    )
+                                    break
+                                default:
+                                    featureMotionValues.current[feature].set(
+                                        featureValues[feature].total
+                                    )
+                                    break
+                            }
+                        })
+                    },
+                })
+                analyzer.current.start()
+            })
+    }, [])
+
+    return featureMotionValues.current
+}
+
+function MotionValueDebug({ motionVal }: { motionVal: MotionValue }) {
+    const [mv, setMv] = useState("")
+    // useEffect(() => motionVal.onChange((value) => setMv(value)))
+    return <h2>{mv}</h2>
+}
+
+function InnerCanvas(props: { value: MotionValue }) {
     const { value } = props
     const mesh = useRef<THREE.Mesh>()
     const springVal = useSpring(value, {
@@ -45,51 +142,25 @@ function InnerCanvas(props) {
 
     return (
         <mesh {...props} ref={mesh}>
-            <meshBasicMaterial attach="material" color="pink" />
-            <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+            <Html>
+                <MotionValueDebug motionVal={value} />
+            </Html>
+            <meshBasicMaterial color="pink" transparent opacity={0.3} />
+            <boxBufferGeometry args={[0.3, 0.3, 0.3]} />
         </mesh>
     )
 }
 
 export default function Vis() {
-    const spectralCentroid = useMotionValue<number>(0)
-    const rms = useMotionValue<number>(0)
-    const zcr = useMotionValue<number>(0)
-    const analyzer = useRef<Meyda.MeydaAnalyzer>()
-
     // rms.onChange((latest) => console.log(typeof latest))
+    // ["rms", "spectralCentroid", "zcr"]
+    const features = useMeydaAudioFeatures(audioFeatures)
 
-    React.useEffect(() => {
-        navigator.mediaDevices
-            .getUserMedia({ audio: true, video: false })
-            .then(function (stream) {
-                const audioContext = new AudioContext()
-                //Now we need to have the audio context take control of your HTML Audio Element.
-                // Create an "Audio Node" from the Audio Element
-                const source = audioContext.createMediaStreamSource(stream)
-                // Connect the Audio Node to your speakers. Now that the audio lives in the
-                // Audio Context, you have to explicitly connect it to the speakers in order to
-                // hear it
-                // source.connect(audioContext.destination)
-
-                // jesus how do i mute this
-
-                if (analyzer.current) analyzer.current.stop()
-
-                analyzer.current = Meyda.createMeydaAnalyzer({
-                    audioContext: audioContext,
-                    source: source,
-                    bufferSize: 512,
-                    featureExtractors: ["rms", "spectralCentroid", "zcr"],
-                    callback: (features: any) => {
-                        rms.set(features.rms * 10)
-                        zcr.set(features.zcr * 0.03921568627)
-                        spectralCentroid.set(features.spectralCentroid * 0.1)
-                    },
-                })
-                analyzer.current.start()
-            })
-    }, [rms])
+    // rms.set(features.rms * 10)
+    // zcr.set(features.zcr * 0.03921568627 * 10)
+    // spectralCentroid.set(features.spectralCentroid * 0.1)
+    // console.log(Features)
+    // useEffect(() => rms.onChange(value => console.log(value)),[])
 
     return (
         <div className="App">
@@ -101,9 +172,15 @@ export default function Vis() {
                     zIndex: -1,
                 }}
             >
-                <InnerCanvas value={spectralCentroid} position={[0, 2, 0]} />
-                <InnerCanvas value={rms} />
-                <InnerCanvas value={zcr} position={[0, -2, 0]} />
+                {Object.keys(features).map((feature, i) => {
+                    return (
+                        <InnerCanvas
+                            key={feature}
+                            value={features[feature]}
+                            position={[0, -2.5 + i * 0.3, 0]}
+                        />
+                    )
+                })}
             </Canvas>
         </div>
     )
