@@ -1,20 +1,20 @@
 {
-    "include": ["src", "types", "https/**/*"],
-    "compilerOptions": {
-      "module": "esnext",
-      "target": "esnext",
-      "moduleResolution": "node",
-      "jsx": "preserve",
-      "baseUrl": "./",
-      "paths": {"*": [".snowpack/.types/*"]},
-      "noEmit": true,
-      "allowJs": true,
-      "strict": false,
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
-      "resolveJsonModule": true,
-      "allowSyntheticDefaultImports": true,
-      "importsNotUsedAsValues": "preserve"
-    }
-  }
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
