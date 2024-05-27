@@ -31,8 +31,6 @@ function Inner(props: { midiPath: string }) {
   const minValue = Math.min(...track.notes.map((obj) => obj.midi))
   const range = maxValue - minValue
 
-  console.log(minValue, maxValue, range)
-
   return (
     <>
       <group position={[width / -2, height / -2, 0]}>
