@@ -3,10 +3,10 @@ import { Canvas, useThree } from "@react-three/fiber"
 import { Midi } from "@tonejs/midi"
 import React from "react"
 import { Suspense } from "react"
-import { suspend } from "suspend-react"
+import { suspend, preload } from "suspend-react"
 
 const midiPaths = [
-  "midi/AfternoonArp.mid",
+  "midi/Afternoon Arp.mid",
   "midi/BMaj Chords.mid",
   "midi/FDOS Arp (MIDI CC01 Mod).mid",
   "midi/FDOS Arp.mid",
@@ -44,7 +44,7 @@ function Inner(props: { midiPath: string }) {
 
           return (
             <mesh key={i} position={[time * width, y, 0]}>
-              <boxGeometry args={[nDuration * width, 0.1, 0.1]} />
+              <boxGeometry args={[nDuration * width, 0.1, 0.01]} />
               <meshBasicMaterial color="blue" />
             </mesh>
           )

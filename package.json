@@ -8,7 +8,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "start": "vite start",
+    "start": "vite preview",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "dependencies": {
