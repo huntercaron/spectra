@@ -1,44 +1,52 @@
 {
-    "name": "gatsby-starter-hello-world",
-    "private": true,
-    "description": "A simplified bare-bones starter for Gatsby",
-    "version": "0.1.0",
-    "license": "0BSD",
-    "scripts": {
-        "build": "snowpack build",
-        "dev": "snowpack dev",
-        "start": "snowpack dev",
-        "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
-    },
-    "dependencies": {
-        "@react-three/drei": "^2.2.18",
-        "@types/meyda": "^4.3.1",
-        "@types/react": "^17.0.0",
-        "@types/react-dom": "^17.0.0",
-        "@types/three": "^0.103.2",
-        "canvas-sketch-util": "^1.10.0",
-        "framer-motion": "^3.2.1",
-        "lerp": "^1.0.3",
-        "meyda": "5.0.3",
-        "postprocessing": "^6.16.0",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "react-three-fiber": "^5.3.14",
-        "ress": "^3.0.0",
-        "three": "^0.124.0"
-    },
-    "devDependencies": {
-        "@snowpack/plugin-react-refresh": "^2.4.0",
-        "@snowpack/plugin-typescript": "^1.2.1",
-        "prettier": "^2.0.5",
-        "snowpack": "^3.0.0",
-        "typescript": "^4.1.3"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
-    },
-    "bugs": {
-        "url": "https://github.com/gatsbyjs/gatsby/issues"
-    }
+  "name": "spectra",
+  "private": true,
+  "type": "module",
+  "description": "spectral experiments",
+  "version": "0.1.0",
+  "license": "0BSD",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "start": "vite start",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.105.6",
+    "@react-three/fiber": "^8.16.6",
+    "@tonejs/midi": "^2.0.28",
+    "canvas-sketch-util": "^1.10.0",
+    "emulsion": "^1.7.1",
+    "framer-motion": "^11.2.6",
+    "framer-motion-3d": "^11.2.6",
+    "lerp": "^1.0.3",
+    "meyda": "5.6.3",
+    "postprocessing": "^6.35.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "suspend-react": "^0.1.3",
+    "three": "^0.164.1",
+    "vite": "^5.2.11"
+  },
+  "devDependencies": {
+    "@types/meyda": "^4.3.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.164.1",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "babel-plugin-react-compiler": "0.0.0-experimental-592953e-20240517",
+    "eslint": "^9.3.0",
+    "eslint-plugin-react-compiler": "0.0.0-experimental-c8b3f72-20240517",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "packageManager": "yarn@4.2.2"
 }

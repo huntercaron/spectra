@@ -1,11 +1,11 @@
-import * as React from "react"
 import Vis from "./001"
+import Vis2 from "./002"
 
-export default function Main(props) {
-    return (
-        <div>
-            Hello world!
-            <Vis />
-        </div>
-    )
+export default function Main() {
+  return (
+    <>
+      {/* <Vis /> */}
+      <Vis2 />
+    </>
+  )
 }
