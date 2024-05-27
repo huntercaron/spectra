@@ -6,7 +6,7 @@ import { Suspense } from "react"
 import { suspend } from "suspend-react"
 
 const midiPaths = [
-  "midi/Afternoon Arp.mid",
+  "midi/AfternoonArp.mid",
   "midi/BMaj Chords.mid",
   "midi/FDOS Arp (MIDI CC01 Mod).mid",
   "midi/FDOS Arp.mid",
